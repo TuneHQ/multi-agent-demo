@@ -10,6 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.4.5"
+    "agents-js": "^0.0.4",
+    "dotenv": "^16.4.5",
+    "jsdom": "^25.0.1",
+    "node-fetch": "^3.3.2",
+    "openai": "^4.72.0"
   }
 }
