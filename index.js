@@ -15,6 +15,24 @@ const client = new OpenAI({
   baseURL: "https://proxy.tune.app", // Remove this if using openai's api directly
 });
 
+async function switchAgent({ agent }) {
+  /**
+   * @param {string} agent - Name of the agent to switch to
+   * @param {object} context_variables - Context from previous interactions
+   * @description Switches between specialized agents (concierge, scheduler, researcher, codeInterpreter) based on user needs
+   */
+  const agentMap = {
+    concierge: conciergeAgent,
+    scheduler: schedulerAgent,
+    researcher: researchAgent,
+  };
+  console.log(`Switching to ${agent}...`);
+  return new Result({
+    value: `Switching to ${agent}...`,
+    agent: agentMap[agent.toLowerCase()],
+  });
+}
+
 const agentController = new AgentController(client);
 
 // Define specialized agents
@@ -94,3 +112,80 @@ const managerAgent = new Agent({
   functions: [switchAgent],
   parallelToolCalls: false,
 });
+
+async function runInteractiveAssistant() {
+  const readline = require("readline").createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  const question = (query) =>
+    new Promise((resolve) => readline.question(query, resolve));
+
+  let currentAgent = managerAgent;
+  let contextVariables = {};
+  let messageHistory = [];
+
+  while (true) {
+    const userInput = await question("\nYou: ");
+    if (userInput.toLowerCase() === "exit") break;
+
+    messageHistory.push({ role: "user", content: userInput });
+
+    try {
+      const response = await agentController.run(
+        currentAgent,
+        messageHistory,
+        contextVariables,
+        null, // model override
+        false, // stream
+        false // debug
+      );
+      // Update context variables
+      contextVariables = {
+        ...contextVariables,
+        ...response.contextVariables,
+      };
+
+      // Check for agent switch
+
+      if (response.agent && response.agent !== currentAgent) {
+        currentAgent = response.agent;
+        console.log(`\n[Switched to ${currentAgent.name}]`);
+      }
+      // Display agent responses
+      // console.log({ messages: response.messages });
+      for (const message of response.messages) {
+        if (message.role === "assistant") {
+          messageHistory.push(message);
+        } else if (message.role === "tool") {
+          messageHistory.push(message);
+        }
+      }
+      console.log(
+        response,
+        `\n${currentAgent?.name}: ${messageHistory?.at(-1)?.content}`
+      );
+
+      // Trim history to prevent context window from growing too large
+      if (messageHistory.length > 10) {
+        messageHistory = messageHistory.slice(messageHistory.length - 10);
+      }
+    } catch (error) {
+      console.error("\nError:", error);
+      console.log("Please try again.");
+    }
+  }
+
+  readline.close();
+}
+
+// Choose which mode to run
+async function main() {
+  runInteractiveAssistant().catch(console.error);
+}
+
+// Run the assistant
+if (require.main === module) {
+  main().catch(console.error);
+}

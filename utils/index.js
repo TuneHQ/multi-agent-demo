@@ -1,5 +1,6 @@
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const { Result } = require("agents-js");
-const fetch = require("node-fetch");
 const { JSDOM, VirtualConsole } = require("jsdom");
 
 const getNearbyRestaurants = async () => {
