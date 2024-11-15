@@ -361,7 +361,7 @@ const crawlWeb = async (url) => {
   return content;
 };
 
-exports = {
+module.exports = {
   getNearbyRestaurants,
   findSlots,
   bookTable,
