@@ -151,7 +151,6 @@ async function runInteractiveAssistant() {
 
       if (response.agent && response.agent !== currentAgent) {
         currentAgent = response.agent;
-        console.log(`\n[Switched to ${currentAgent.name}]`);
       }
       // Display agent responses
       // console.log({ messages: response.messages });
@@ -163,7 +162,6 @@ async function runInteractiveAssistant() {
         }
       }
       console.log(
-        response,
         `\n${currentAgent?.name}: ${messageHistory?.at(-1)?.content}`
       );
 

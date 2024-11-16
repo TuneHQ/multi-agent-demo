@@ -262,11 +262,10 @@ async function conductResearch({ query }) {
       }
       if (result?.organic?.length) {
         await result?.organic?.slice(0, 3)?.map(async (res, key) => {
-          console.log("Crawling web for content...", res);
           knowledgeGraph += res?.title + "\n" + res?.snippet;
           knowledgeGraph += await crawlWeb(res.link).then((content) => {
             if (key === 2) {
-              console.log("Crawling completed", { content });
+              console.log("Crawling completed");
               resolve();
             }
             return content?.slice(0, 1500);
