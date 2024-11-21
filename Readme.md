@@ -1,5 +1,7 @@
 # Multi-Agent Interactive Assistant
 
+https://github.com/user-attachments/assets/6da3083c-5440-454d-9685-b579e14159f7
+
 ## Overview
 
 A sophisticated multi-agent AI system designed to assist with restaurant bookings, scheduling, and research tasks using specialized agents.
@@ -107,8 +109,4 @@ You: Research AI trends in 2024
 Researcher: Analyzing current AI landscape...
 ```
 
-## [DEMO Video]
-
-
-https://github.com/user-attachments/assets/6da3083c-5440-454d-9685-b579e14159f7
 
