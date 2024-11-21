@@ -108,3 +108,7 @@ Researcher: Analyzing current AI landscape...
 ```
 
 ## [DEMO Video]
+
+
+https://github.com/user-attachments/assets/6da3083c-5440-454d-9685-b579e14159f7
+
