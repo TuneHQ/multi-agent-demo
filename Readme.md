@@ -15,8 +15,8 @@ A sophisticated multi-agent AI system designed to assist with restaurant booking
 ### 1. Clone Repository
 
 ```bash
-git clone <repository-url>
-cd <project-directory>
+git clone https://github.com/TuneHQ/multi-agent-demo
+cd multi-agent-demo
 npm install
 ```
 
